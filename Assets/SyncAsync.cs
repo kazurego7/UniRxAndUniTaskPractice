@@ -22,13 +22,7 @@ public static class SyncAsync {
 	public static IObservable<TR> SyncLoop<T, TR> (IEnumerable<T> items, Func<T, IObservable<TR>> proc) {
 		return items.Select (item => proc (item)).Concat ();
 	}
-	public static IObservable<TR> SyncLoop<T, TR> (IEnumerable<T> items, IObservable<TR> proc) {
-		return items.Select (_ => proc).Concat ();
-	}
 	public static IObservable<TR> AsyncLoop<T, TR> (IEnumerable<T> items, Func<T, IObservable<TR>> proc) {
 		return items.Select (item => proc (item)).Merge ();
-	}
-	public static IObservable<TR> AsyncLoop<T, TR> (IEnumerable<T> items, IObservable<TR> proc) {
-		return items.Select (_ => proc).Merge ();
 	}
 }

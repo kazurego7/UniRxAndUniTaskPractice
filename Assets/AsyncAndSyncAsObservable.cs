@@ -15,15 +15,15 @@ public class AsyncAndSyncAsObservable : MonoBehaviour {
 		ちなみに、途中のAsyncは、前後のObservableと直列につながっている(MergeしてConcat)。
 		*/
 		Sync (
-			TimerDefault (TimeSpan.FromSeconds (1)),
-			PrintLog ("1"),
-			TimerDefault (TimeSpan.FromSeconds (2)),
-			PrintLog ("2")
+			TimerUnit (TimeSpan.FromSeconds (1)),
+			PrintUnit ("1"),
+			TimerUnit (TimeSpan.FromSeconds (2)),
+			PrintUnit ("2")
 		).Async (
-			TimerDefault (TimeSpan.FromSeconds (3)),
-			PrintLog ("3"),
-			TimerDefault (TimeSpan.FromSeconds (3)),
-			PrintLog ("3")
+			TimerUnit (TimeSpan.FromSeconds (3)),
+			PrintUnit ("3"),
+			TimerUnit (TimeSpan.FromSeconds (3)),
+			PrintUnit ("3")
 		).Subscribe ();
 	}
 }

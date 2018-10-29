@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UniRx;
+using UniRx.Async;
 using UnityEngine;
-using static UniRx.Observable;
 using static UnitObservable;
 using static SyncAsync;
+using static UniRx.Observable;
 using System;
 using System.Linq;
 
@@ -15,23 +16,20 @@ public class DeclarativeToImperative : MonoBehaviour {
 
 		var periodFrameCount = 60;
 		var maxCount = 6;
-		void DeclarativeDo () {
+		IObservable<Unit> DeclarativeDo () {
+			return
 			TimerFrame (0, periodFrameCount)
 				.TakeWhile (t => t <= maxCount)
-				.SelectMany (count => PrintLog ("test"))
-				.Subscribe ();
+				.SelectMany (count => PrintUnit ("test"));
 		}
-		void ImperativeDo () {
-			SyncLoop (new int[maxCount],
-					Sync (
-						TimerFrame (periodFrameCount).AsUnitObservable (),
-						PrintLog ("test2").AsUnitObservable ()
-					)
-				)
-				.Subscribe ();
+		IObservable<Unit> ImperativeDo () {
+			return SyncLoop (Enumerable.Range (0, maxCount), t =>
+				Sync (
+					TimerFrame (periodFrameCount).AsUnitObservable (),
+					Observable.Start (() => Debug.Log ("test"))
+				));
 		}
-		IEnumerator
-		// DeclarativeDo ();
-		ImperativeDo ();
+		// DeclarativeDo ().Subscribe ();
+		ImperativeDo ().Subscribe ();
 	}
 }
